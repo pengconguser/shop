@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Cache;
 use App\Notifications\EmailVerificationNotification;
 use App\Model\User;
+use App\Exceptions\InvalidRequestException;
 
 class EmailVerificationController extends Controller
 {
@@ -17,16 +18,16 @@ class EmailVerificationController extends Controller
     	// empty exceptions
 
     	if(!$email || !$token){
-    		throw new \Exception('token is error or email empty');
+    		throw new InvalidRequestException('token is error or email empty');
     	}
 
     	if($token !=Cache::get('email_verification_'.$email)){
-    		throw new \Exception('email empty or call time');
+    		throw new InvalidRequestException('email empty or call time');
     	}
 
 
     	if(!$user=User::where('email',$email)->first()){
-    		throw new \Exception('User empty');
+    		throw new InvalidRequestException('User empty');
     	}
 
 
@@ -42,7 +43,7 @@ class EmailVerificationController extends Controller
     	$user =$request->user();
 
     	if($user->email_verified){
-    		throw new \Exception("user email verify!");
+    		throw new InvalidRequestException("user email verify!");
     	}
 
     	$user->notify(new EmailVerificationNotification());
