@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{{ url('/') }}">
-                Laravel Shop
+                 Shop
             </a>
         </div>
             <ul class="nav navbar-nav">
