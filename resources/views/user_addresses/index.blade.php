@@ -5,7 +5,10 @@
 <div class="row">
 <div class="col-lg-10 col-lg-offset-1">
 <div class="panel panel-default">
-  <div class="panel-heading">收货地址列表</div>
+    <div class="panel-heading">
+          收货地址列表
+          <a href="{{ route('user_addresses.create') }}" class="pull-right">新增收货地址</a>
+    </div>
   <div class="panel-body">
     <table class="table table-bordered table-striped">
       <thead>
@@ -25,8 +28,8 @@
         <td>{{ $address->zip }}</td>
         <td>{{ $address->contact_phone }}</td>
         <td>
-          <button class="btn btn-primary">修改</button>
-          <button class="btn btn-danger">删除</button>
+          <a href="{{ route('user_addresses.edit', ['user_address' => $address->id]) }}" class="btn btn-primary">修改</a>
+         <button class="btn btn-danger btn-del-address" type="button" data-id="{{ $address->id }}">删除</button>
         </td>
       </tr>
       @endforeach
@@ -36,4 +39,33 @@
 </div>
 </div>
 </div>
+@endsection
+
+@section('scriptsAfterJs')
+  <script type="text/javascript">
+       $(document).ready(function(){
+            $('.btn-del-address').click(function(e){
+              //get address id
+              var id=$(this).data('id');
+
+              swal({
+                 title:"确认要删除该地址？",
+                 icon:"warning",
+                 buttons:['取消','确定'],
+                 dangerMode:true,
+              }).then(function(willDelete){
+                  console.log(willDelete);
+                  if(!willDelete){
+                     return;
+                  }
+                  //call delete api
+                  axios.delete('/user_addresses/' + id).then(function(){
+                       //success reload index
+                       window.location.href="/user_addresses";
+                  });
+              });
+         });
+       });
+ 
+  </script>
 @endsection
