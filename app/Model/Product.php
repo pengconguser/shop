@@ -11,7 +11,7 @@ class Product extends Model
         'rating', 'sold_count', 'review_count', 'price',
     ];
 
-    public function product_sku()
+    public function skus()
     {
         return $this->hasMany(\App\Model\ProductSku::class);
     }
